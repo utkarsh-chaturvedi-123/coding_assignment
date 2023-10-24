@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            background-color: #7a7af7;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 2px 1px rgb(113, 113, 113)
+        }
+
+        .form-container {
+            background-color: white;
+            box-shadow: 1px 1px 20px 10px rgb(40, 40, 40);
+            padding: 0px 25px 20px;
+            margin: 32px;
+
+        }
+
+        form {
+            font-weight: 500;
+        }
+
+        label {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        input {
+            height: 23px;
+        }
+
+        .related-info label {
+            margin-bottom: 8px;
+        }
+
+        .name {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .gender {
+            display: flex;
+        }
+
+        #gen {
+            padding-right: 20px;
+        }
+
+        .gender input {
+            margin-right: 25px;
+            margin-top: 13px;
+        }
+
+        button {
+            padding: 7px 20px;
+            margin-top: 15px;
+            margin-right: 6px;
+            background-color: #7a7af7;
+            color: whitesmoke;
+            border: none;
+            cursor: pointer;
+        }
+
+        #popup {
+
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(35, 33, 33, 0.8);
+            text-align: center;
+
+        }
+
+        #popup-content {
+            background: #fff;
+            border-radius: 5px;
+            display: inline-block;
+            padding: 20px;
+            position: absolute;
+            top: 18%;
+            right: 0.5%;
+
+
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    
+    <div class="form-container">
+        <h1>Survey Form</h1>
+        <form id="survey-form">
+            <div class="name">
+                <label for="first-name" id="labfirstname">First Name</label>
+                <label for="last-name">Last Name</label>
+                <input type="text" id="first-name" required />
+                <input type="text" id="last-name" required />
+            </div>
+
+            <div class="related-info">
+                <label for="date-of-birth">Date of Birth</label>
+                <input type="date" id="date-of-birth" required />
+
+                <label for="country">Country</label>
+                <select id="country" required>
+                    <option>USA</option>
+                    <option>India</option>
+                    <option>Canada</option>
+                    <option>Australia</option>
+
+                </select>
+
+                <div class="gender">
+                    <label id="gen">Gender :</label>
+                    <label for="male" id="labmale">Male</label>
+                    <input type="checkbox" id="male" />
+                    <label for="female" id="labfemale">Female</label>
+                    <input type="checkbox" id="female" />
+                    <label for="other" id="labother">Other</label>
+                    <input type="checkbox" id="other" />
+
+                </div>
+                <label for="profession">Profession</label>
+                <input type="text" id="profession" required />
+
+                <label for="email">Email</label>
+                <input type="email" id="email" required />
+
+                <label for="mobile-number">Mobile Number</label>
+                <input type="tel" id="mobile-number" required /><br>
+
+            </div>
+            <div class="button">
+                <button type="button" id="submit-button" onclick="submitForm()">Submit</button>
+                <button type="button" id="reset-button" onclick="resetForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+    <div id="popup" class="hidden">
+        <div id="popup-content">
+            <h2>Submission Details</h2>
+            <div id="popup-results"></div>
+            <button onclick="closePopup()">Close</button>
+        </div>
+        <script>
+            function submitForm() {
+
+                const FirstName = document.getElementById("first-name").value;
+                const LastName = document.getElementById("last-name").value;
+                const DateOfBirth = document.getElementById("date-of-birth").value;
+                const Country = document.getElementById("country").value;
+
+                const male = document.getElementById("male");
+                const female = document.getElementById("female");
+                const other = document.getElementById("other");
+                const labmale = document.getElementById("labmale").innerText;
+                const labfemale = document.getElementById("labfemale").innerText;
+                const labother = document.getElementById("labother").innerText;
+
+                //  display only selected gender
+                let selectedGender = ' ';
+                const genderInput = [male, female, other];
+                const labelinnerText = [labmale, labfemale, labother];
+                for (let i = 0; i < genderInput.length; i++) {
+                    let checkbox = genderInput[i];
+
+                    if (checkbox.checked) {
+                        selectedGender += labelinnerText[i] + ' ';
+
+                    }
+                }
+
+                const Profession = document.getElementById("profession").value;
+                const Email = document.getElementById("email").value;
+                const MobileNumber = document.getElementById("mobile-number").value;
+
+
+                const PopupResult = document.getElementById("popup-results");
+                PopupResult.innerHTML =
+                    `<p><strong>First Name :</strong> ${FirstName}</p>
+           <p><strong>Last Name :</strong> ${LastName}</p>
+           <p><strong>Date Of Birth :</strong> ${DateOfBirth}</p>
+           <p><strong>Country :</strong> ${Country}</p>
+           <p><strong>Gender :</strong> ${selectedGender}</p>
+           <p><strong>Profession :</strong> ${Profession}</p>
+           <p><strong>Email :</strong> ${Email}</p>
+           <p><strong>Mobile Number :</strong> ${MobileNumber}</p> `;
+
+                document.getElementById("popup").classList.remove("hidden"); /* if class will remove during submission then display all data because i have set css property display:none in class hidden so i remove  hidden class css property does not work  */
+
+
+            }
+
+            function closePopup() {
+                document.getElementById("popup").classList.add("hidden");
+                resetForm();
+            }
+
+            function resetForm() {
+                document.getElementById("survey-form").reset();
+            }
+
+        </script>
+</body>
+
+</html>
